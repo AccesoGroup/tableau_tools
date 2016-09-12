@@ -31,14 +31,15 @@ class TableauDatasource(TableauBase):
         # Internal "Parameters" datasource of a TWB acts differently
         if self.ds_name == u'Parameters':
             self.parameters = True
-            self.ds_generator = TableauParametersGenerator()
+            self.ds_generator = TableauParametersGenerator(self.logger)
         else:
             connection_xml_obj = self.xml.getroot().find(u'connection')
             self.log(u'connection tags found, building a TableauConnection object')
             self.connection = TableauConnection(connection_xml_obj)
 
             self.repository_location = None
-            if len(self.xml.getroot().find(u'repository-location')) == 0:
+            locations = self.xml.getroot().find(u'repository-location')
+            if not locations or len(locations) == 0:
                 repository_location_xml = self.xml.getroot().find(u'repository-location')
                 self.repository_location = TableauRepositoryLocation(repository_location_xml, self.logger)
 

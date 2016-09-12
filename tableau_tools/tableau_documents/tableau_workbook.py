@@ -24,7 +24,7 @@ class TableauWorkbook(TableauBase):
         if self.logger is not None:
             self.enable_logging(self.logger)
 
-        for line in self.wb:
+        for line in codecs.iterdecode(self.wb, 'utf-8'):
             # Start parsing the datasources
             if start_flag is True and ds_flag is False:
                 self.start_xml += line
