@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import codecs
 from ..tableau_base import *
 from tableau_datasource import TableauDatasource
 
