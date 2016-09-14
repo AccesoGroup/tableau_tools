@@ -1233,7 +1233,7 @@ class TableauRestApiConnection(TableauBase):
 
     # Do not include file extension, added automatically. Without filename, only returns the response
     # Use no_obj_return for save without opening and processing
-    def download_workbook_by_luid(self, wb_luid, filename=None, no_obj_return=False):
+    def download_workbook_by_luid(self, wb_luid, filename=None, no_obj_return=False, file=None):
         self.start_log_block()
         try:
             url = self.build_api_url(u"workbooks/{}/content".format(wb_luid))
@@ -1253,10 +1253,10 @@ class TableauRestApiConnection(TableauBase):
             self.end_log_block()
             raise
         try:
-            if filename is None:
-                save_filename = 'temp_wb' + extension
+            if file is None:
+                save_filename = '{}.{}'.format(filename if filename else 'temp_wb', extension)
             else:
-                save_filename = filename + extension
+                save_filename = file.name
 
             save_file = open(save_filename, 'wb')
             save_file.write(wb)
@@ -1267,11 +1267,11 @@ class TableauRestApiConnection(TableauBase):
                 self.log(u'Detected TWBX, creating TableauPackagedFile object')
                 saved_file = open(save_filename, 'rb')
                 return_obj = TableauPackagedFile(saved_file, self.logger)
-                if filename is None:
+                if filename is None and file is None:
                     os.remove(save_filename)
 
         except IOError:
-            self.log(u"Error: File '{}' cannot be opened to save to".format(filename + extension))
+            self.log(u"Error: File '{}' cannot be opened to save to".format(save_filename + extension))
             raise
         if no_obj_return is True:
             return
