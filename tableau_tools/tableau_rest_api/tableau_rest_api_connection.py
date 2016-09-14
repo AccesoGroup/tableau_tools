@@ -1254,7 +1254,7 @@ class TableauRestApiConnection(TableauBase):
             raise
         try:
             if file is None:
-                save_filename = '{}.{}'.format(filename if filename else 'temp_wb', extension)
+                save_filename = '{}{}'.format(filename if filename else 'temp_wb', extension)
             else:
                 save_filename = file.name
 
