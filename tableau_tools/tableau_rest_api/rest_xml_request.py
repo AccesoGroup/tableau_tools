@@ -135,10 +135,9 @@ class RestXmlRequest(TableauBase):
                 self.__raw_response = initial_response
                 return initial_response
 
-            # Use HTMLParser to get rid of the escaped unicode sequences, then encode the thing as utf-8
-            parser = HTMLParser()
-            unicode_raw_response = parser.unescape(initial_response)
+	    unicode_raw_response = initial_response
 
+	    # Encode the thing as utf-8
             try:
                 self.__raw_response = unicode_raw_response.encode('utf-8')
             # Sometimes it appears we actually send this stuff in UTF8
